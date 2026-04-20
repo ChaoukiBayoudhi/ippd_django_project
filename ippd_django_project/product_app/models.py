@@ -12,6 +12,11 @@ from django.utils import timezone
 from .validators import alphanumeric_code_validator
 
 
+def _today():
+    """Current date in the active timezone (callable default for DateField)."""
+    return timezone.now().date()
+
+
 class Product(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, verbose_name="Product ID"
@@ -46,8 +51,8 @@ class Product(models.Model):
             )
         ],
     )
-    manufactured_date = models.DateField(default=timezone.now().date())
-    expiry_date = models.DateField(default=timezone.now().date())
+    manufactured_date = models.DateField(default=_today)
+    expiry_date = models.DateField(default=_today)
 
     class Meta:
         db_table = "products"
